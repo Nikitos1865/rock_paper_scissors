@@ -53,7 +53,7 @@ function singleGame() {
     let compChoice = getComputerChoice();
     alert("The computer chose "+compChoice)
 
-    if ((compChoice == "Rock" && playerMove == "Rock") || (compChoice == "Scissors" && playerMove == "Scissors") || (compChoice == "Paper" && playerMove == "Paper")) {
+    if ((compChoice == playerMove)) {
         alert("It's a tie!");
     }
     else if ((compChoice == "Rock" && playerMove == "Scissors") || (compChoice == "Scissors" && playerMove == "Paper") || (compChoice == "Paper" && playerMove == "Rock")) {
