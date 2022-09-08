@@ -8,6 +8,53 @@
 //capitalized, then checking whether it is rock paper or scissors. return "Rock" "Paper"
 // or "Scissors"
 
+const gameOutput = document.createElement('div');
+const buttonBox = document.createElement('div');
+const startGame = document.createElement('div');
+const scoreBoard = document.createElement('div');
+
+const playerScoreBoard = document.createElement('h2');
+const playerString = "You: ";
+let playerScore = 0;
+playerScoreBoard.textContent = playerString+playerScore;
+
+const compScoreBoard = document.createElement('h2');
+const compString = "Computer: ";
+let compScore = 0; 
+compScoreBoard.textContent = compString+compScore; 
+
+scoreBoard.appendChild(playerScoreBoard);
+scoreBoard.appendChild(compScoreBoard);
+
+
+
+const gameText = document.createElement('h1')
+gameText.textContent = 'Welcome to Rock Paper Scissors! Best 3 out of 5 wins! Choose an option to begin playing against the computer.'
+gameOutput.appendChild(gameText);
+document.body.appendChild(gameOutput);
+
+const rockButton = document.createElement('button');
+rockButton.classList.add("Rock");
+rockButton.setAttribute('id','roc');
+rockButton.textContent = "Rock";
+
+const paperButton = document.createElement('button');
+paperButton.classList.add("Paper");
+paperButton.setAttribute('id','pap');
+paperButton.textContent = "Paper";
+
+const scisButton = document.createElement('button');
+scisButton.classList.add("Scissors");
+scisButton.setAttribute('id','sci');
+scisButton.textContent = "Scissors";
+
+buttonBox.appendChild(rockButton);
+buttonBox.appendChild(paperButton);
+buttonBox.appendChild(scisButton);
+
+document.body.appendChild(buttonBox);
+const buttons = document.querySelectorAll('button')
+
 const compChoices = [];
 compChoices[0]="Rock";
 compChoices[1]="Paper";
@@ -18,86 +65,101 @@ function getComputerChoice() {
     return compChoices[i];
 }
 
-function playerSelection(playerChoice) {
-    playerChoice = prompt("Rock, Paper, or Scissors?");
-    let restOfString = playerChoice.substr(1);
-    let firstLetter = playerChoice.slice(0,1);
-    return (firstLetter.toUpperCase()+restOfString.toLowerCase());
-}
 
-function singleGame() {
-    let valid = false; 
-    let playerMove = playerSelection();
-    while (valid === false) {
-        if (playerMove == "Rock") {
-            alert("You picked Rock!");
-            valid = true;
-            console.log(valid);
+
+function singleGame(playerMove) { 
+            if (playerMove == "Rock") {
+                gameText.textContent = "You picked Rock!";
+            }
+            else if (playerMove == "Paper"){
+                gameText.textContent = "You picked Paper!";
+            }
+            else if (playerMove == "Scissors") {
+                gameText.textContent = "You picked Scissors!";
+            }
+    
+        let compChoice = getComputerChoice();
+        gameText.textContent = "The computer chose "+compChoice+"! "
+    
+        if ((compChoice == playerMove)) {
+            gameText.textContent += "It's a tie!";
         }
-        else if (playerMove == "Paper"){
-            alert("You picked Paper!");
-            valid = true;
-        }
-        else if (playerMove == "Scissors") {
-            alert("You picked Scissors!");
-            valid = true;
+        else if ((compChoice == "Rock" && playerMove == "Scissors") || (compChoice == "Scissors" && playerMove == "Paper") || (compChoice == "Paper" && playerMove == "Rock")) {
+            gameText.textContent += "\nYou lose this one...";
+            return "lose";
         }
         else {
-            alert("This wasn't one of the options, choose again smartass");
-            playerMove = playerSelection();
+            gameText.textContent += "\nYou win this round!";
+            return "win";
         }
+    
+    };
 
-        
-    } 
 
-    let compChoice = getComputerChoice();
-    alert("The computer chose "+compChoice)
+    
 
-    if ((compChoice == playerMove)) {
-        alert("It's a tie!");
-    }
-    else if ((compChoice == "Rock" && playerMove == "Scissors") || (compChoice == "Scissors" && playerMove == "Paper") || (compChoice == "Paper" && playerMove == "Rock")) {
-        alert("You lose this one...");
-        return "lose";
-    }
-    else {
-        alert("You win!");
-        return "win";
-    }
-
-}
 
 function bestOutOf3() {
-    let playerPoints = 0; 
-    let compPoints = 0;
-    alert("The game is rock, paper, scissors, best 3 out of 5 wins");
+    console.log("The game is rock, paper, scissors, best 3 out of 5 wins");
+    let playerMove;
+    playerScore = 0; 
+    compScore = 0;
+    const element = document.querySelectorAll('button');
+    console.log(element)
+    buttons.forEach(button => button.addEventListener('click', () => {
+            document.body.appendChild(scoreBoard);
+            playerMove = button.classList.value; 
+            let outcome = singleGame(playerMove);
+            if (outcome == "win") {
+                playerScore++; 
+                gameText.textContent += "\nYou got this! Only "+(3 - playerScore)+" left to win!";
+                 }
+            else if (outcome == "lose") {
+                compScore++;
+                gameText.textContent += "\nChoose carefully! The computer has to win "+(3 - compScore)+" more before it's all over!";
+                }
 
-    while (playerPoints < 3 || compPoints < 3) {
-        let outcome = singleGame();
-        if (outcome == "win") {
-            playerPoints++; 
-            if (playerPoints == 3) {
-                alert("You win, go home and celebrate!");
-                break; 
-            }
-            else {
-                alert("You got this! Only "+(3 - playerPoints)+" left to win!");
-            }
-            //alert("You have "+playerPoints+" points. You need "+(3 - playerPoints)+" more to win.")
+                if (compPoints == 3){
+                    if(playerMove == "Rock"){
+                        gameText.textContent = "The computer chose paper to win the final round. Go home and cry about it. If you want to play again, reload the page";
+                    }
+                    else if (playerMove == "Paper"){
+                            gameText.textContent = "Ooh, so close, but the computer cut your paper with scissors, don't be sad, reload the page and play again";
+                        }
+                    else if (playerMove == "Scissors"){
+                        gameText.textContent = "The computer broke your scissors with rock and won the final round. Sorry for your loss, try again by reloading the page";
+                    }
+                    
+                    document.getElementById('roc').disabled = true; 
+                    document.getElementById('pap').disabled = true; 
+                    document.getElementById('sci').disabled = true; 
+                    return; 
+                }
+                
+                
+                if (playerPoints == 3){
+                    if(playerMove == "Rock"){
+                        gameText.textContent = "You broke the computer's scissors to win the final round! If you want to play again, reload the page";
+                    }
+                    else if (playerMove == "Paper"){
+                            gameText.textContent = "The computer tried to throw its rock at you, but you covered it with paper to win! Reload the page to play again";
+                        }
+                    else if (playerMove == "Scissors"){
+                        gameText.textContent = "You cut the computer's paper! You win! Try your luck again by reloading the page";
+                    }
+                    
+
+                    document.getElementById('roc').disabled = true; 
+                    document.getElementById('pap').disabled = true; 
+                    document.getElementById('sci').disabled = true;
+                }
+    
         }
-        else if (outcome == "lose") {
-            compPoints++;
-            if (compPoints == 3){
-                alert("The computer won, go home and cry about it.");
-                break;
-            }
-            else {
-                alert("Choose carefully! The computer has to win "+(3 - compPoints)+" more before it's all over!");
-            }
-            //alert("Choose carefully, the computer needs to win "+(3 - compPoints)+" more rounds to win!")
-    }
+    ))
 
-    }
-}
+    
+};
 
-bestOutOf3();
+    
+
+bestOutOf3(); 
