@@ -12,6 +12,7 @@ const gameOutput = document.createElement('div');
 const buttonBox = document.createElement('div');
 const startGame = document.createElement('div');
 const scoreBoard = document.createElement('div');
+const restartBox = document.createElement('div');
 
 const playerScoreBoard = document.createElement('h2');
 const playerString = "You: ";
@@ -26,6 +27,10 @@ compScoreBoard.textContent = compString+compScore;
 scoreBoard.appendChild(playerScoreBoard);
 scoreBoard.appendChild(compScoreBoard);
 
+const restartButton = document.createElement('button');
+restartButton.textContent = 'Restart Game';
+restartBox.appendChild(restartButton);
+restartButton.getAttribute('class', 'restart')
 
 
 const gameText = document.createElement('h1')
@@ -112,14 +117,16 @@ function bestOutOf3() {
             let outcome = singleGame(playerMove);
             if (outcome == "win") {
                 playerScore++; 
+                playerScoreBoard.textContent = playerString+playerScore;
                 gameText.textContent += "\nYou got this! Only "+(3 - playerScore)+" left to win!";
                  }
             else if (outcome == "lose") {
                 compScore++;
+                compScoreBoard.textContent = compString+compScore;
                 gameText.textContent += "\nChoose carefully! The computer has to win "+(3 - compScore)+" more before it's all over!";
                 }
 
-                if (compPoints == 3){
+                if (compScore == 3){
                     if(playerMove == "Rock"){
                         gameText.textContent = "The computer chose paper to win the final round. Go home and cry about it. If you want to play again, reload the page";
                     }
@@ -132,12 +139,12 @@ function bestOutOf3() {
                     
                     document.getElementById('roc').disabled = true; 
                     document.getElementById('pap').disabled = true; 
-                    document.getElementById('sci').disabled = true; 
+                    document.getElementById('sci').disabled = true;
                     return; 
                 }
                 
                 
-                if (playerPoints == 3){
+                if (playerScore == 3){
                     if(playerMove == "Rock"){
                         gameText.textContent = "You broke the computer's scissors to win the final round! If you want to play again, reload the page";
                     }
@@ -152,6 +159,7 @@ function bestOutOf3() {
                     document.getElementById('roc').disabled = true; 
                     document.getElementById('pap').disabled = true; 
                     document.getElementById('sci').disabled = true;
+                    return;
                 }
     
         }
@@ -161,5 +169,11 @@ function bestOutOf3() {
 };
 
     
+document.body.appendChild(restartBox);
+
+restartButton.addEventListener('click', function restart(){
+    location.reload()
+})
+
 
 bestOutOf3(); 
