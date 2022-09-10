@@ -171,9 +171,20 @@ function bestOutOf3() {
     
 document.body.appendChild(restartBox);
 
-restartButton.addEventListener('click', function restart(){
-    location.reload()
-})
+
+
+
+
+//restartButton.addEventListener('click', function restart(){
+   // location.reload()
+//})
+
+restartButton.addEventListener('click', () => {location.reload()});
+
+
+
+
+
 
 
 bestOutOf3(); 
